@@ -71,7 +71,7 @@ class PostController extends Controller
             'post' => $post
         ];
 
-        return view('admin.posts.show', $data)->with(['data'=>$data]);
+        return view('admin.posts.show', compact('post'));
     }
 
     /**
