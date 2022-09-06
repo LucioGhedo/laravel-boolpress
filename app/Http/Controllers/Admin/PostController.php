@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Post;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class PostController extends Controller
 {
@@ -18,8 +19,11 @@ class PostController extends Controller
     {
         $posts = Post::all();
 
+        $now = Carbon::now();
+
         $data = [
-            'posts' => $posts
+            'posts' => $posts,
+            'now' => $now
         ];
         
         return view('admin.posts.index', $data);
@@ -65,13 +69,19 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $post = Post::find($id);
+        $post = Post::findOrFail($id);
+
+        $now = Carbon::now();
+        $diff = $post->created_at->diffForHumans($now);
+        $diff_hours = $post->created_at->diffInHours($now);
 
         $data = [
-            'post' => $post
+            'post' => $post,
+            'diff' => $diff,
+            'diff_hours' => $diff_hours
         ];
 
-        return view('admin.posts.show', compact('post'));
+        return view('admin.posts.show', compact('post', 'diff', 'diff_hours'));
     }
 
     /**
@@ -82,7 +92,13 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::findOrFail($id);
+        
+        $data = [
+            'post' => $post
+        ];
+
+        return view('admin.posts.edit', $data);
     }
 
     /**
@@ -94,7 +110,20 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate($this->getValidatedPost());
+        $form_data = $request->all();
+
+        $post_to_update = Post::findOrFail($id);
+        
+        if($form_data['title'] !== $post_to_update->title) {
+            $form_data['slug'] = $this->getSlugFromTitle($form_data['title']);
+        } else {
+            $form_data['slug'] = $post_to_update->slug;
+        }
+
+        $post_to_update->update($form_data);
+
+        return redirect()->route('admin.posts.show', ['post' => $id]);
     }
 
     /**
@@ -105,7 +134,11 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post_to_delete = Post::findOrFail($id);
+
+        $post_to_delete->delete();
+
+        return redirect()->route('admin.posts.index');
     }
 
     protected function getSlugFromTitle($title) {
