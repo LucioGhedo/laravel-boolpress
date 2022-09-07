@@ -7,7 +7,7 @@
         @method('PUT')
 
         @if ($errors->any())
-            <div>
+            <div class="alert alert-danger">
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -20,6 +20,14 @@
           <label for="title">Titolo</label>
           <input type="text" class="form-control" id="title" placeholder="Titolo" name="title" value="{{ old('title', $post->title) }}">
         </div>
+
+        <label for="category_id">Categoria</label>
+        <select class="form-select" aria-label="Default select example" name="category_id" id="category_id">
+          <option value="">Nessuna categoria</option>
+          @foreach ($categories as $category)
+            <option value="{{$category->id}}" {{ old('category_id', $post->category ? $post->category->id : '') == $category->id ? 'selected' : '' }}>{{$category->name}}</option>
+          @endforeach
+        </select>
 
         <div class="form-group">
           <label for="content">Content</label>
