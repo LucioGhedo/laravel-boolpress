@@ -5,6 +5,8 @@
 
     <p>{{$post['content']}}</p>
 
+    <p>Slug: {{ $post->slug }}</p>
+
     <p>Creato il: {{ $post->created_at->format('j/m/Y') }} alle {{ $post->created_at->format('G:i:s') }}</p>
 
     <p>Created {{ $diff }} {{ $diff < 24 ? '' : $diff_hours}}</p>
