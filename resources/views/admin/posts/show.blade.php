@@ -13,6 +13,17 @@
 
     <p>Categoria: {{ $post->category ? $post->category->name : 'nessuna' }}</p>
 
+    <p>
+        @if (count($post->tags->toArray()))
+            <strong>Tags:</strong>
+            @foreach ($post->tags as $tag)
+                {{ $tag->name }}{{ !$loop->last ? ',' : '' }}
+            @endforeach
+        @else
+        Nessun tag
+        @endif
+    </p>
+
     <a href="{{ route('admin.posts.edit', ['post' => $post['id']]) }}" class="btn btn-primary">Edit Post</a>
 
     <form action="{{ route('admin.posts.destroy', ['post' => $post->id]) }}" method="POST">
