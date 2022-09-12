@@ -10966,7 +10966,3 @@ a.text-dark:focus {
   }
 }
 
-.card {
-  width: calc(33.3333333333% - 20px);
-}
-
