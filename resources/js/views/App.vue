@@ -1,22 +1,22 @@
 <template>
     <div>
-        <header>
-            <a href="/admin">Admin privata</a>
-        </header>
+        <HeaderComponent />
         <main>
-            <Posts />
+            <div class="container">
+                <router-view></router-view>
+            </div>
         </main>
     </div>
 </template>
 
 
 <script>
-    import Posts from '../components/Posts.vue';
-    
+import HeaderComponent from '../components/HeaderComponent.vue';
+
     export default {
         name: 'App',
         components: {
-            Posts
+            HeaderComponent
         }
     }
     </script>
