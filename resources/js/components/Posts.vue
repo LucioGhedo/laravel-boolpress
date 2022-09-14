@@ -2,14 +2,8 @@
     <div class="container">
         <h2>{{ pageTitle }}</h2>
         <div class="row row-cols-3">
-            <div class="col-sm-4" v-for="post in posts" :key="post.id">
-                <div class="card mt-3 f_height">
-                    <div class="card-body">
-                        <h5 class="card-title">{{post.title}}</h5>
-                        <p class="card-text">{{shortText(post.content)}}</p>
-                        <button type="button" class="btn btn-dark">Info</button>
-                    </div>
-                </div>
+            <div class="col-sm-4" v-for="singlePost in posts" :key="singlePost.id">
+                <PostDetails :post="singlePost"/>
             </div>
         </div>
         <div class="d-flex justify-content-center">
@@ -31,10 +25,13 @@
 </template>
 
 <script>
-import Axios from 'axios';
+import PostDetails from './PostDetails.vue';
 
 export default {
     name: 'Posts',
+    components: {
+        PostDetails
+    },
     data() {
         return {
             pageTitle: 'I nostri post',
