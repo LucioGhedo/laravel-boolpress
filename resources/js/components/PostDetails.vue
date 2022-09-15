@@ -2,6 +2,7 @@
     <div class="card mt-3 f_height">
         <div class="card-body">
             <h5 class="card-title">{{post.title}}</h5>
+            <img :src="post.cover" class="card-img-top" :alt="post.title" v-if="post.cover">
             <p class="card-text">{{shortText(post.content)}}</p>
             <router-link 
                 class="btn btn-dark" 

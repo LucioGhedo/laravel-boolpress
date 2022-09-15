@@ -2096,7 +2096,13 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     axios.get('/api/posts/' + this.$route.params.slug).then(function (response) {
-      _this.post = response.data.results;
+      if (response.data.success) {
+        _this.post = response.data.results;
+      } else {
+        _this.$router.push({
+          name: 'error'
+        });
+      }
     });
   }
 });
@@ -2218,7 +2224,13 @@ var render = function render() {
     staticClass: "card-body"
   }, [_c("h5", {
     staticClass: "card-title"
-  }, [_vm._v(_vm._s(_vm.post.title))]), _vm._v(" "), _c("p", {
+  }, [_vm._v(_vm._s(_vm.post.title))]), _vm._v(" "), _vm.post.cover ? _c("img", {
+    staticClass: "card-img-top",
+    attrs: {
+      src: _vm.post.cover,
+      alt: _vm.post.title
+    }
+  }) : _vm._e(), _vm._v(" "), _c("p", {
     staticClass: "card-text"
   }, [_vm._v(_vm._s(_vm.shortText(_vm.post.content)))]), _vm._v(" "), _c("router-link", {
     staticClass: "btn btn-dark",
@@ -2482,7 +2494,13 @@ var render = function render() {
 
   return _c("div", [_vm.post ? _c("div", {
     staticClass: "mt-4"
-  }, [_c("h1", [_vm._v(_vm._s(_vm.post.title))]), _vm._v(" "), _c("div", [_vm.post.tags.length !== 0 ? _c("div", {
+  }, [_c("h1", [_vm._v(_vm._s(_vm.post.title))]), _vm._v(" "), _vm.post.cover ? _c("img", {
+    staticClass: "card-img-top w-50 text-center",
+    attrs: {
+      src: _vm.post.cover,
+      alt: _vm.post.title
+    }
+  }) : _vm._e(), _vm._v(" "), _c("div", [_vm.post.tags.length !== 0 ? _c("div", {
     staticClass: "tags text-center mt-3"
   }, [_vm._v("\n                TAGS:\n                "), _c("div", _vm._l(_vm.post.tags, function (item) {
     return _c("button", {

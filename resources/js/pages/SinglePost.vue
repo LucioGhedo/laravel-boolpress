@@ -2,6 +2,7 @@
     <div>
         <div class="mt-4" v-if="post">
             <h1>{{post.title}}</h1>
+            <img :src="post.cover" class="card-img-top w-50 text-center" :alt="post.title" v-if="post.cover">
             <div>
                 <div v-if="post.tags.length !== 0" class="tags text-center mt-3">
                     TAGS:

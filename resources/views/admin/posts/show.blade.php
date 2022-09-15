@@ -3,6 +3,10 @@
 @section('content')
     <h1>{{$post['title']}}</h1>
 
+    @if ($post['cover'])
+        <img style="width: 30%" src="{{ asset('storage/' . $post->cover) }}" alt="{{$post['title']}}">
+    @endif
+
     <p>{{$post['content']}}</p>
 
     <p>Slug: {{ $post->slug }}</p>

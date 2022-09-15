@@ -2,7 +2,7 @@
 
 @section('content')
     <h1>modifica post</h1>
-    <form action="{{ route('admin.posts.update', ['post' => $post->id]) }}" method="POST">
+    <form action="{{ route('admin.posts.update', ['post' => $post->id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -19,6 +19,15 @@
         <div class="form-group">
           <label for="title">Titolo</label>
           <input type="text" class="form-control" id="title" placeholder="Titolo" name="title" value="{{ old('title', $post->title) }}">
+
+          @if ($post->cover)
+            <img src="{{ asset('storage/' . $post->cover) }}" class="img_edit" alt="post cover" style="width: 30%; margin-top: 20px">
+          @endif
+        </div>
+
+        <div class="mb-3">
+          <label for="image" class="form-label">modifica foto</label>
+          <input class="form-control" type="file" id="image" name="image">
         </div>
 
         <div class="mt-5 mb-5">

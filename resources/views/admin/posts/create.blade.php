@@ -2,7 +2,7 @@
 
 @section('content')
     <h1>Crea post</h1>
-    <form action="{{ route('admin.posts.store') }}" method="POST">
+    <form action="{{ route('admin.posts.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('POST')
 
@@ -51,6 +51,11 @@
             <option value="{{$category->id}}" {{old('category_id') == $category->id ? 'selected' : ''}}>{{$category->name}}</option>
           @endforeach
         </select>
+
+        <div class="mb-3">
+          <label for="image" class="form-label">Default file input example</label>
+          <input class="form-control" type="file" id="image" name="image">
+        </div>
 
         <button type="submit" class="btn d-block mt-5 btn-primary">Submit</button>
       </form>

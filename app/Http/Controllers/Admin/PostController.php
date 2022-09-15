@@ -9,6 +9,7 @@ use App\Category;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use App\Tag;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -59,7 +60,12 @@ class PostController extends Controller
         $request->validate($this->getValidatedPost());
 
         $form_data = $request->all();
-        
+
+        if(isset($form_data['image'])) {
+            $img_path = Storage::put('post-covers', $form_data['image']);
+            $form_data['cover'] = $img_path;
+        }
+
         $new_post = new Post();
         $new_post->fill($form_data);
         
@@ -132,6 +138,19 @@ class PostController extends Controller
         $form_data = $request->all();
 
         $post_to_update = Post::findOrFail($id);
+
+        // se l'utente vuole cambiare img
+        if($form_data['image']) {
+            // e il post ha già un'immagine
+            if($post_to_update->cover) {
+                // cancello vecchia img
+                Storage::delete($post_to_update->cover);
+            }
+            // salvo l'immagine in post-covers
+            $img_path = Storage::put('post-covers', $form_data['image']);
+            // popolo colonna cover con il path immagine
+            $form_data['cover'] = $img_path;
+        }
         
         if($form_data['title'] !== $post_to_update->title) {
             $form_data['slug'] = $this->getSlugFromTitle($form_data['title']);
@@ -160,6 +179,10 @@ class PostController extends Controller
     {
         $post_to_delete = Post::findOrFail($id);
 
+        if($post_to_delete->cover) {
+            Storage::delete($post_to_delete->cover);
+        }
+
         $post_to_delete->tags()->sync([]);
 
         $post_to_delete->delete();
@@ -187,7 +210,8 @@ class PostController extends Controller
             'title' => 'required|max:255',
             'content' => 'required|max:60000',
             'category_id' => 'nullable|exists:categories,id',
-            'tags' => 'nullable|exists:tags,id'
+            'tags' => 'nullable|exists:tags,id',
+            'image' => 'nullable|file|max:500000'
         ];
     }
 }
