@@ -8,6 +8,7 @@ import AboutPage from './pages/AboutPage.vue';
 import BlogPage from './pages/BlogPage.vue';
 import ErrorPage from './pages/ErrorPage.vue';
 import SinglePost from './pages/SinglePost.vue';
+import ContactPage from './pages/ContactPage.vue';
 
 // REGOLE ROUTING
 const router = new VueRouter({
@@ -32,6 +33,11 @@ const router = new VueRouter({
             path: '/blog/:slug',
             name: 'single-post',
             component: SinglePost
+        },
+        {
+            path: '/contact',
+            name: 'contact',
+            component: ContactPage
         },
         {
             path: '/*',
